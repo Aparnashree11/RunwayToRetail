@@ -1,70 +1,38 @@
-# Getting Started with Create React App
+# Fashion-Runway-To-Retail
+ Image-Based Fashion Retrieval Using Deep Visual Similarity and Ethical Filtering
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+# Project Overview
+This project is an AI-driven fashion retrieval system that helps users find affordable alternatives to high-fashion or runway items by uploading a reference image. The system uses a combination of deep learning-based visual embeddings, color and category analysis, and ethically-aware reranking to return similar products scraped from Amazon. Users can further filter results by price, material, sustainability, and ethical attributes like vegan, locally made, and fair wage.
 
-## Available Scripts
+# Core Features
+Upload a fashion image (runway, celebrity, or influencer style)
+Deep visual similarity with ResNet50, EfficientNetB3, and MobileNetV2
+Metadata-aware filtering: material, brand, sustainability tags
+Reranking based on color match, category alignment, and ethical filters
+Real-time results using KD-Tree and PCA for fast indexing
+React frontend + FastAPI backend with clean UI and responsive search
 
-In the project directory, you can run:
+# Technologies Used
 
-### `npm start`
+Component	Stack
+Frontend	React.js, TailwindCSS
+Backend	FastAPI, Uvicorn, Pydantic
+Deep Learning	TensorFlow, ResNet50, MobileNetV2, EfficientNetB3
+Data Processing	NumPy, OpenCV, PIL, Scikit-learn, PCA
+Deployment	Docker-ready / Localhost setup
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+# Dataset
+We scraped a curated collection of ~1,000 Amazon fashion items using a custom crawler. Each product entry includes:
+Product title and brand
+Image (base64 encoded)
+Price
+Material and sustainability tags (e.g., vegan, fair wage)
+Product URL for reference
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
-
-### `npm test`
-
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
-
-### `npm run build`
-
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
-
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
-
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
-
-### `npm run eject`
-
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
-
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
-
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+# How It Works
+User uploads an image via the React interface
+The image is sent to the backend where:
+Visual features are extracted
+Similar items are retrieved using KD-Tree
+Reranked using filters and heuristics
+Filtered, ranked results are returned with metadata and visual cues
