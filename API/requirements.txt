@@ -1,5 +1,5 @@
 fastapi
-uvicorn[standard]
+uvicorn>=0.22.0
 pydantic
 numpy
 pillow
