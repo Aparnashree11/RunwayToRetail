@@ -73,46 +73,50 @@ async def lifespan(app: FastAPI):
         print(f"Warning: Dataset not found at {json_path}. API will not work until dataset is loaded.")
         return
     
-    # Initialize the similarity engine
-    similarity_engine = ImprovedClothingSimilarity()
+    try:
+        # Initialize the similarity engine
+        similarity_engine = ImprovedClothingSimilarity()
+        
+        # Load and prepare the dataset
+        print(f"Loading dataset from {json_path}...")
+        dataset, features, feature_info = similarity_engine.prepare_dataset(json_path)
+        print(f"Dataset loaded with {len(dataset)} items")
+        
+        # Extract filter options
+        brands = sorted(list(set(item.get('brand', '') for item in dataset if item.get('brand'))))
+        materials = sorted(list(set(item.get('material', '') for item in dataset if item.get('material'))))
+        
+        colors = set()
+        for info in feature_info:
+            for color in info.get('color_names', []):
+                colors.add(color)
+        colors = sorted(list(colors))
+        
+        sustainability_practices = sorted(list(set(item.get('sustainability', '') 
+                                                for item in dataset if item.get('sustainability'))))
+        
+        # Calculate price range
+        prices = []
+        for item in dataset:
+            try:
+                if 'price' in item and item['price']:
+                    if isinstance(item['price'], str):
+                        price_str = ''.join(c for c in item['price'] if c.isdigit() or c == '.')
+                        if price_str:
+                            price = float(price_str)
+                            prices.append(price)
+                    elif isinstance(item['price'], (int, float)):
+                        prices.append(float(item['price']))
+            except:
+                continue
+        
+        if prices:
+            price_range = (min(prices), max(prices))
+        
+        print("API ready to use!")
     
-    # Load and prepare the dataset
-    print(f"Loading dataset from {json_path}...")
-    dataset, features, feature_info = similarity_engine.prepare_dataset(json_path)
-    print(f"Dataset loaded with {len(dataset)} items")
-    
-    # Extract filter options
-    brands = sorted(list(set(item.get('brand', '') for item in dataset if item.get('brand'))))
-    materials = sorted(list(set(item.get('material', '') for item in dataset if item.get('material'))))
-    
-    colors = set()
-    for info in feature_info:
-        for color in info.get('color_names', []):
-            colors.add(color)
-    colors = sorted(list(colors))
-    
-    sustainability_practices = sorted(list(set(item.get('sustainability', '') 
-                                            for item in dataset if item.get('sustainability'))))
-    
-    # Calculate price range
-    prices = []
-    for item in dataset:
-        try:
-            if 'price' in item and item['price']:
-                if isinstance(item['price'], str):
-                    price_str = ''.join(c for c in item['price'] if c.isdigit() or c == '.')
-                    if price_str:
-                        price = float(price_str)
-                        prices.append(price)
-                elif isinstance(item['price'], (int, float)):
-                    prices.append(float(item['price']))
-        except:
-            continue
-    
-    if prices:
-        price_range = (min(prices), max(prices))
-    
-    print("API ready to use!")
+    except Exception as e:
+        print(f"Error during lifespan setup: {e}")
 
     yield
 
