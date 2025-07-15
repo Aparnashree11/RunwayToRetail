@@ -64,6 +64,7 @@ class SimilarityResponse(BaseModel):
 
 # Load the dataset and initialize the model
 async def lifespan(app: FastAPI):
+    print("Lifespan context starting up...")
     global similarity_engine, dataset, features, feature_info, brands, materials, colors, sustainability_practices, price_range
     
     # Path to JSON dataset - change this to your dataset path
