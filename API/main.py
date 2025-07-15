@@ -13,25 +13,10 @@ import base64
 from PIL import Image
 import numpy as np
 import io
+from contextlib import asynccontextmanager
 
 # Import the improved clothing similarity model
 from IRProject import ImprovedClothingSimilarity
-
-# Initialize the app
-app = FastAPI(
-    title="Fashion Runway to Retail API",
-    description="AI-Driven Fashion Retrieval System for finding affordable alternatives to high-fashion looks",
-    version="1.0.0"
-)
-
-# Add CORS middleware
-app.add_middleware(
-    CORSMiddleware,
-    allow_origins=["*"],  # Allows all origins
-    allow_credentials=True,
-    allow_methods=["*"],  # Allows all methods
-    allow_headers=["*"],  # Allows all headers
-)
 
 # Global variables
 similarity_engine = None
@@ -128,6 +113,25 @@ async def lifespan(app: FastAPI):
         price_range = (min(prices), max(prices))
     
     print("API ready to use!")
+
+    yield
+
+# Initialize the app
+app = FastAPI(
+    title="Fashion Runway to Retail API",
+    description="AI-Driven Fashion Retrieval System for finding affordable alternatives to high-fashion looks",
+    version="1.0.0",
+    lifespan=lifespan
+)
+
+# Add CORS middleware
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],  # Allows all origins
+    allow_credentials=True,
+    allow_methods=["*"],  # Allows all methods
+    allow_headers=["*"],  # Allows all headers
+)
 
 # API endpoint to get filter options
 @app.get("/filters", response_model=FilterOptions)
@@ -268,5 +272,3 @@ async def health_check():
     Health check endpoint to verify the API is running
     """
     return {"status": "healthy", "model_loaded": similarity_engine is not None}
-
-app = FastAPI(lifespan=lifespan)
