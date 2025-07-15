@@ -2,9 +2,9 @@ import React, { useState, useEffect } from 'react';
 import { Camera } from 'lucide-react';
 import './index.css'; 
 
-const API_URL = 'http://localhost:8000';
-
 function App() {
+
+  const API_URL = process.env.API_URL;
   const [selectedFile, setSelectedFile] = useState(null);
   const [preview, setPreview] = useState(null);
   const [results, setResults] = useState([]);
