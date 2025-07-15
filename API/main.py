@@ -78,8 +78,7 @@ class SimilarityResponse(BaseModel):
     processing_time: float
 
 # Load the dataset and initialize the model
-@app.on_event("startup")
-async def startup_event():
+async def lifespan(app: FastAPI):
     global similarity_engine, dataset, features, feature_info, brands, materials, colors, sustainability_practices, price_range
     
     # Path to JSON dataset - change this to your dataset path
@@ -269,3 +268,5 @@ async def health_check():
     Health check endpoint to verify the API is running
     """
     return {"status": "healthy", "model_loaded": similarity_engine is not None}
+
+app = FastAPI(lifespan=lifespan)

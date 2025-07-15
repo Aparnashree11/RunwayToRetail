@@ -130,6 +130,9 @@ function App() {
           <p className="mt-1 text-sm text-gray-500">
             Upload runway fashion and discover affordable alternatives
           </p>
+          <p className="mt-2 text-xs text-gray-400">
+            This is a demo application built for showcasing image-based fashion item retrieval. The dataset is limited and currently includes alternatives for the following categories: hoodies, sweatshirts, sun dresses, and jackets.
+          </p>
         </div>
       </header>
       
