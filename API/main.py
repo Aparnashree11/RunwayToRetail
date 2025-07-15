@@ -62,8 +62,25 @@ class SimilarityResponse(BaseModel):
     total_results: int
     processing_time: float
 
+# Initialize the app
+app = FastAPI(
+    title="Fashion Runway to Retail API",
+    description="AI-Driven Fashion Retrieval System for finding affordable alternatives to high-fashion looks",
+    version="1.0.0"
+)
+
+# Add CORS middleware
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],  # Allows all origins
+    allow_credentials=True,
+    allow_methods=["*"],  # Allows all methods
+    allow_headers=["*"],  # Allows all headers
+)
+
 # Load the dataset and initialize the model
-async def lifespan(app: FastAPI):
+@app.on_event("startup")
+async def startup_event():
     print("Lifespan context starting up...")
     global similarity_engine, dataset, features, feature_info, brands, materials, colors, sustainability_practices, price_range
     
@@ -121,22 +138,10 @@ async def lifespan(app: FastAPI):
 
     yield
 
-# Initialize the app
-app = FastAPI(
-    title="Fashion Runway to Retail API",
-    description="AI-Driven Fashion Retrieval System for finding affordable alternatives to high-fashion looks",
-    version="1.0.0",
-    lifespan=lifespan
-)
+@app.get("/ping")
+async def ping():
+    return {"message": "pong"}
 
-# Add CORS middleware
-app.add_middleware(
-    CORSMiddleware,
-    allow_origins=["*"],  # Allows all origins
-    allow_credentials=True,
-    allow_methods=["*"],  # Allows all methods
-    allow_headers=["*"],  # Allows all headers
-)
 
 # API endpoint to get filter options
 @app.get("/filters", response_model=FilterOptions)
