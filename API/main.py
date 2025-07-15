@@ -83,7 +83,7 @@ async def startup_event():
     global similarity_engine, dataset, features, feature_info, brands, materials, colors, sustainability_practices, price_range
     
     # Path to JSON dataset - change this to your dataset path
-    json_path = os.environ.get("C:/Users/HP/Downloads/IR_Project", "dataset.json")
+    json_path = os.environ.get("DATASET_PATH", os.path.join(os.path.dirname(__file__), "dataset.json"))
     
     if not os.path.exists(json_path):
         print(f"Warning: Dataset not found at {json_path}. API will not work until dataset is loaded.")
@@ -269,7 +269,3 @@ async def health_check():
     Health check endpoint to verify the API is running
     """
     return {"status": "healthy", "model_loaded": similarity_engine is not None}
-
-if __name__ == "__main__":
-    # Run the FastAPI using Uvicorn
-    uvicorn.run("API_IR:app", host="127.0.0.1", port=8000, reload=True)

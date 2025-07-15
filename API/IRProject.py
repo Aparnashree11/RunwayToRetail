@@ -24,11 +24,15 @@ import pickle
 from concurrent.futures import ThreadPoolExecutor
 
 # Add this before loading your dataset
-cache_dir = "similarity_cache"
-if os.path.exists(cache_dir):
-    shutil.rmtree(cache_dir)
-    os.makedirs(cache_dir)
-    print(f"Cleared cache in {cache_dir}")
+cache_dir = os.environ.get("CACHE_DIR", os.path.join(os.getcwd(), "similarity_cache"))
+
+def setup_cache(clear_cache=True):
+    if clear_cache and os.path.exists(cache_dir):
+        shutil.rmtree(cache_dir)
+    os.makedirs(cache_dir, exist_ok=True)
+    print(f"Cache directory ready at {cache_dir}")
+
+setup_cache(clear_cache=False) 
 
 # Define clothing categories for classification
 CLOTHING_CATEGORIES = [
