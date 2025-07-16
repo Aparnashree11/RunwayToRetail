@@ -1,5 +1,6 @@
 # Fashion-Runway-To-Retail
  Image-Based Fashion Retrieval Using Deep Visual Similarity and Ethical Filtering
+ **App Link**: [Check out the app here](https://runway-to-retail.vercel.app/)
 
 # Project Overview
 This project is an AI-driven fashion retrieval system that helps users find affordable alternatives to high-fashion or runway items by uploading a reference image. The system uses a combination of deep learning-based visual embeddings, color and category analysis, and ethically-aware reranking to return similar products scraped from Amazon. Users can further filter results by price, material, sustainability, and ethical attributes like vegan, locally made, and fair wage.
